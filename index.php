@@ -18,7 +18,7 @@ require_once __DIR__ . '/../phpOMS/Autoloader.php';
 
 $dbHOBJ = new \phpOMS\DataStorage\Database\Pool();
 $dbHOBJ->create('core', $CONFIG['db']['core']['masters'][0]);
-$instHOBJ = new \Admin\Install\Installer($dbHOBJ);
+$instHOBJ = new \Install\Installer($dbHOBJ);
 
 /**
  * Array with all modules to install.
