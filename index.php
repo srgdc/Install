@@ -46,7 +46,6 @@ $toInstall = [
     'Chart',
     'Checklist',
     'ClientManagement',
-    'Clocking',
     'Controlling',
     'CostCenterAccounting',
     'CostObjectAccounting',
