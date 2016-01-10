@@ -17,6 +17,7 @@ namespace Install;
 
 use phpOMS\ApplicationAbstract;
 use phpOMS\DataStorage\Database\DatabaseType;
+use phpOMS\DataStorage\Database\Pool;
 use phpOMS\Module\ModuleManager;
 
 /**
@@ -36,7 +37,7 @@ class Installer extends ApplicationAbstract
     /**
      * Database object.
      *
-     * @var \phpOMS\DataStorage\Database\Pool
+     * @var Pool
      * @since 1.0.0
      */
     public $dbPool = null;
@@ -44,12 +45,12 @@ class Installer extends ApplicationAbstract
     /**
      * Constructor.
      *
-     * @param \phpOMS\DataStorage\Database\Pool $dbPool Database instance
+     * @param Pool $dbPool Database instance
      *
      * @since  1.0.0
      * @author Dennis Eichhorn <d.eichhorn@oms.com>
      */
-    public function __construct($dbPool)
+    public function __construct(Pool $dbPool)
     {
         $this->dbPool = $dbPool;
     }
