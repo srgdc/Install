@@ -14,6 +14,7 @@
  * @link       http://orange-management.com
  */
 namespace Install;
+
 use phpOMS\ApplicationAbstract;
 use phpOMS\DataStorage\Database\DatabaseType;
 use phpOMS\Module\ModuleManager;
@@ -61,9 +62,10 @@ class Installer extends ApplicationAbstract
      */
     public function installCore()
     {
-        /* Create module table */
-        $this->dbPool->get('core')->con->prepare(
-            'CREATE TABLE if NOT EXISTS `' . $this->dbPool->get('core')->prefix . 'module` (
+        try {
+            /* Create module table */
+            $this->dbPool->get('core')->con->prepare(
+                'CREATE TABLE if NOT EXISTS `' . $this->dbPool->get('core')->prefix . 'module` (
                             `module_id` varchar(255) NOT NULL,
                             `module_theme` varchar(100) DEFAULT NULL,
                             `module_path` varchar(50) NOT NULL,
@@ -71,11 +73,11 @@ class Installer extends ApplicationAbstract
                             `module_version` varchar(10) DEFAULT NULL,
                             PRIMARY KEY (`module_id`)
                         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
-        )->execute();
+            )->execute();
 
-        /* Create module load table */
-        $this->dbPool->get('core')->con->prepare(
-            'CREATE TABLE if NOT EXISTS `' . $this->dbPool->get('core')->prefix . 'module_load` (
+            /* Create module load table */
+            $this->dbPool->get('core')->con->prepare(
+                'CREATE TABLE if NOT EXISTS `' . $this->dbPool->get('core')->prefix . 'module_load` (
                             `module_load_id` int(11) NOT NULL AUTO_INCREMENT,
                             `module_load_pid` varchar(40) NOT NULL,
                             `module_load_type` tinyint(1) NOT NULL,
@@ -85,7 +87,12 @@ class Installer extends ApplicationAbstract
                             PRIMARY KEY (`module_load_id`),
                             KEY `module_load_from` (`module_load_from`)
                         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;'
-        )->execute();
+            )->execute();
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -93,17 +100,23 @@ class Installer extends ApplicationAbstract
      *
      * @param array $modules Array of all module to install
      *
-     * @return void
+     * @return bool
      *
      * @since  1.0.0
      * @author Dennis Eichhorn <d.eichhorn@oms.com>
      */
     public function installModules($modules)
     {
-        $moduleManager = new ModuleManager($this);
+        try {
+            $moduleManager = new ModuleManager($this);
 
-        foreach ($modules as $module) {
-            $moduleManager->install($module);
+            foreach ($modules as $module) {
+                $moduleManager->install($module);
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
         }
     }
 
@@ -115,22 +128,28 @@ class Installer extends ApplicationAbstract
      */
     public function installGroups()
     {
-        switch ($this->dbPool->get('core')->getType()) {
-            case DatabaseType::MYSQL:
-                $this->dbPool->get('core')->con->beginTransaction();
+        try {
+            switch ($this->dbPool->get('core')->getType()) {
+                case DatabaseType::MYSQL:
+                    $this->dbPool->get('core')->con->beginTransaction();
 
-                $this->dbPool->get('core')->con->prepare(
-                    'INSERT INTO `' . $this->dbPool->get('core')->prefix . 'group` (`group_id`, `group_name`, `group_desc`) VALUES
+                    $this->dbPool->get('core')->con->prepare(
+                        'INSERT INTO `' . $this->dbPool->get('core')->prefix . 'group` (`group_id`, `group_name`, `group_desc`) VALUES
                             (1000000000, \'guest\', NULL),
                             (1000101000, \'user\', NULL),
                             (1000102000, \'admin\', NULL),
                             (1000103000, \'support\', NULL),
                             (1000104000, \'backend\', NULL),
                             (1000105000, \'suspended\', NULL);'
-                )->execute();
+                    )->execute();
 
-                $this->dbPool->get('core')->con->commit();
-                break;
+                    $this->dbPool->get('core')->con->commit();
+                    break;
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
         }
     }
 
@@ -142,25 +161,31 @@ class Installer extends ApplicationAbstract
      */
     public function installUsers()
     {
-        $date = new \DateTime('NOW', new \DateTimeZone('UTC'));
+        try {
+            $date = new \DateTime('NOW', new \DateTimeZone('UTC'));
 
-        switch ($this->dbPool->get('core')->getType()) {
-            case DatabaseType::MYSQL:
-                $this->dbPool->get('core')->con->beginTransaction();
+            switch ($this->dbPool->get('core')->getType()) {
+                case DatabaseType::MYSQL:
+                    $this->dbPool->get('core')->con->beginTransaction();
 
-                $this->dbPool->get('core')->con->prepare(
-                    'INSERT INTO `' . $this->dbPool->get('core')->prefix . 'account` (`account_id`, `account_status`, `account_type`, `account_lactive`, `account_created`, `account_login`, `account_name1`, `account_name2`, `account_name3`, `account_password`, `account_email`, `account_tries`) VALUES
+                    $this->dbPool->get('core')->con->prepare(
+                        'INSERT INTO `' . $this->dbPool->get('core')->prefix . 'account` (`account_id`, `account_status`, `account_type`, `account_lactive`, `account_created`, `account_login`, `account_name1`, `account_name2`, `account_name3`, `account_password`, `account_email`, `account_tries`) VALUES
                             (1, 0, 0, \'0000-00-00 00:00:00\', \'' . $date->format('Y-m-d H:i:s') . '\', \'admin\', \'Cherry\', \'Orange\', \'Orange Management\', \'' . password_hash('orange', PASSWORD_DEFAULT) . '\', \'admin@email.com\', 5);'
-                )->execute();
+                    )->execute();
 
-                $this->dbPool->get('core')->con->prepare(
-                    'INSERT INTO `' . $this->dbPool->get('core')->prefix . 'account_group` (`account_group_id`, `account_group_group`, `account_group_account`) VALUES
+                    $this->dbPool->get('core')->con->prepare(
+                        'INSERT INTO `' . $this->dbPool->get('core')->prefix . 'account_group` (`account_group_id`, `account_group_group`, `account_group_account`) VALUES
                             (1, 1000101000, 1),
                             (2, 1000104000, 1);'
-                )->execute();
+                    )->execute();
 
-                $this->dbPool->get('core')->con->commit();
-                break;
+                    $this->dbPool->get('core')->con->commit();
+                    break;
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
         }
     }
 
@@ -172,12 +197,13 @@ class Installer extends ApplicationAbstract
      */
     public function installSettings()
     {
-        switch ($this->dbPool->get('core')->getType()) {
-            case DatabaseType::MYSQL:
-                $this->dbPool->get('core')->con->beginTransaction();
+        try {
+            switch ($this->dbPool->get('core')->getType()) {
+                case DatabaseType::MYSQL:
+                    $this->dbPool->get('core')->con->beginTransaction();
 
-                $this->dbPool->get('core')->con->prepare(
-                    'INSERT INTO `' . $this->dbPool->get('core')->prefix . 'settings` (`settings_id`, `settings_module`, `settings_name`, `settings_content`, `settings_group`) VALUES
+                    $this->dbPool->get('core')->con->prepare(
+                        'INSERT INTO `' . $this->dbPool->get('core')->prefix . 'settings` (`settings_id`, `settings_module`, `settings_name`, `settings_content`, `settings_group`) VALUES
                             (1000000001, NULL, \'username_length_max\', \'20\', NULL),
                             (1000000002, NULL, \'username_length_min\', \'5\', NULL),
                             (1000000003, NULL, \'password_length_max\', \'50\', NULL),
@@ -207,10 +233,15 @@ class Installer extends ApplicationAbstract
                             (1000000027, NULL, \'decimal_point\', \'.\', NULL),
                             (1000000028, NULL, \'thousands_sep\', \',\', NULL),
                             (1000000029, NULL, \'server_language\', \'en\', NULL)'
-                )->execute();
+                    )->execute();
 
-                $this->dbPool->get('core')->con->commit();
-                break;
+                    $this->dbPool->get('core')->con->commit();
+                    break;
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
         }
     }
 }
