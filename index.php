@@ -37,7 +37,7 @@ $toInstall = [
     'BankAccounting',
     'Billing',
     'BudgetManagement',
-    'Business',
+    'Organization',
     'BusinessPlanningSimulation',
     'Calendar',
     'CapacityPlanning',
