@@ -170,7 +170,7 @@ class Installer extends ApplicationAbstract
                     $this->dbPool->get('core')->con->beginTransaction();
 
                     $this->dbPool->get('core')->con->prepare(
-                        'INSERT INTO `' . $this->dbPool->get('core')->prefix . 'account` (`account_id`, `account_status`, `account_type`, `account_lactive`, `account_created`, `account_login`, `account_name1`, `account_name2`, `account_name3`, `account_password`, `account_email`, `account_tries`) VALUES
+                        'INSERT INTO `' . $this->dbPool->get('core')->prefix . 'account` (`account_id`, `account_status`, `account_type`, `account_lactive`, `account_created_at`, `account_login`, `account_name1`, `account_name2`, `account_name3`, `account_password`, `account_email`, `account_tries`) VALUES
                             (1, 0, 0, \'0000-00-00 00:00:00\', \'' . $date->format('Y-m-d H:i:s') . '\', \'admin\', \'Cherry\', \'Orange\', \'Orange Management\', \'' . password_hash('orange', PASSWORD_DEFAULT) . '\', \'admin@email.com\', 5);'
                     )->execute();
 
