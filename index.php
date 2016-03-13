@@ -54,7 +54,6 @@ $toInstall = [
     'Draw',
     'Editor',
     'EmployeeEvaluation',
-    'EmployeeManagement',
     'EventManagement',
     'HumanResourceManagement',
     'InventoryManagement',
@@ -109,17 +108,5 @@ $instHOBJ->installModules($toInstall);
 $instHOBJ->installGroups();
 $instHOBJ->installUsers(); /* TODO: create user 1 = Guest -> 2 = Admin */
 $instHOBJ->installSettings();
-
-$toDummy = [
-    //'Media',
-    //'News',
-    //'Tasks',
-    //'HumanResources',
-    //'Production',
-    //'Sales',
-    //'Purchase',
-    //'Accounting',
-];
-//$instHOBJ->installDummy($toDummy);
 
 echo 'ALPHA successfully installed!';
