@@ -112,7 +112,11 @@ class Installer extends ApplicationAbstract
             $moduleManager = new ModuleManager($this);
 
             foreach ($modules as $module) {
-                $moduleManager->install($module);
+                try {
+                    $moduleManager->install($module);
+                } catch(\Exception $e) {
+                    echo $e->getMessage();
+                }
             }
 
             return true;
