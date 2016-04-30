@@ -55,6 +55,15 @@ class Installer extends ApplicationAbstract
         $this->dbPool = $dbPool;
     }
 
+    public function cleanupPrevious()
+    {
+        if(file_exists($path = __DIR__ . '/../Web/Routes.php')) {
+            unlink($path);
+        }
+
+        file_put_contents($path, '<?php return [];');
+    }
+
     /**
      * Install core tables.
      *
@@ -169,22 +178,22 @@ class Installer extends ApplicationAbstract
         try {
             $date = new \DateTime('NOW', new \DateTimeZone('UTC'));
 
-            switch ($this->dbPool->get('core')->getType()) {
+            switch ($this->dbPool->get()->getType()) {
                 case DatabaseType::MYSQL:
-                    $this->dbPool->get('core')->con->beginTransaction();
+                    $this->dbPool->get()->con->beginTransaction();
 
-                    $this->dbPool->get('core')->con->prepare(
-                        'INSERT INTO `' . $this->dbPool->get('core')->prefix . 'account` (`account_id`, `account_status`, `account_type`, `account_lactive`, `account_created_at`, `account_login`, `account_name1`, `account_name2`, `account_name3`, `account_password`, `account_email`, `account_tries`) VALUES
-                            (1, 0, 0, \'0000-00-00 00:00:00\', \'' . $date->format('Y-m-d H:i:s') . '\', \'admin\', \'Cherry\', \'Orange\', \'Orange Management\', \'' . password_hash('orange', PASSWORD_DEFAULT) . '\', \'admin@email.com\', 5);'
+                    $this->dbPool->get()->con->prepare(
+                        'INSERT INTO `' . $this->dbPool->get()->prefix . 'account` (`account_status`, `account_type`, `account_login`, `account_name1`, `account_name2`, `account_name3`, `account_password`, `account_email`, `account_tries`, `account_lactive`, `account_created_at`) VALUES
+                            (0, 0, \'admin\', \'Cherry\', \'Orange\', \'Orange Management\', \'' . password_hash('orange', PASSWORD_DEFAULT) . '\', \'admin@email.com\', 5, \'1000-01-01 00:00:00\', \'' . $date->format('Y-m-d H:i:s') . '\');'
                     )->execute();
 
-                    $this->dbPool->get('core')->con->prepare(
-                        'INSERT INTO `' . $this->dbPool->get('core')->prefix . 'account_group` (`account_group_id`, `account_group_group`, `account_group_account`) VALUES
+                    $this->dbPool->get()->con->prepare(
+                        'INSERT INTO `' . $this->dbPool->get()->prefix . 'account_group` (`account_group_id`, `account_group_group`, `account_group_account`) VALUES
                             (1, 1000101000, 1),
                             (2, 1000104000, 1);'
                     )->execute();
 
-                    $this->dbPool->get('core')->con->commit();
+                    $this->dbPool->get()->con->commit();
                     break;
             }
 

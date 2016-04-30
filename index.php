@@ -103,6 +103,7 @@ $toInstall = [
     'WarehouseManagement',
 ];
 
+$instHOBJ->cleanupPrevious();
 $instHOBJ->installCore();
 $instHOBJ->installModules($toInstall);
 $instHOBJ->installGroups();
