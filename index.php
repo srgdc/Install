@@ -53,6 +53,7 @@ $toInstall = [
     'CostObjectAccounting',
     'CreditManagement',
     'Dashboard',
+    'Database',
     'Draw',
     'Editor',
     'EmployeeEvaluation',
@@ -61,6 +62,7 @@ $toInstall = [
     'InventoryManagement',
     'InvoiceManagement',
     'ItemManagement',
+    'Job',
     'Logistics',
     'LotTracking',
     'Marketing',
@@ -104,6 +106,7 @@ $toInstall = [
     'Tools',
     'TravelExpenses',
     'WarehouseManagement',
+    'Workflow',
 ];
 
 $instHOBJ->cleanupPrevious();
