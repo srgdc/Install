@@ -57,7 +57,7 @@ class Installer extends ApplicationAbstract
 
     public function cleanupPrevious()
     {
-        if(file_exists($path = __DIR__ . '/../Web/Routes.php')) {
+        if(file_exists($path = __DIR__ . '/../Web/Backend/Routes.php')) {
             unlink($path);
         }
 
