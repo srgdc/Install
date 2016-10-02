@@ -15,6 +15,7 @@
  */
 namespace Install;
 
+use phpOMS\Account\GroupStatus;
 use phpOMS\ApplicationAbstract;
 use phpOMS\DataStorage\Database\DatabaseType;
 use phpOMS\DataStorage\Database\Pool;
@@ -57,7 +58,7 @@ class Installer extends ApplicationAbstract
 
     public function cleanupPrevious()
     {
-        if(file_exists($path = __DIR__ . '/../Web/Backend/Routes.php')) {
+        if (file_exists($path = __DIR__ . '/../Web/Backend/Routes.php')) {
             unlink($path);
         }
 
@@ -123,7 +124,7 @@ class Installer extends ApplicationAbstract
             foreach ($modules as $module) {
                 try {
                     $moduleManager->install($module);
-                } catch(\Exception $e) {
+                } catch (\Exception $e) {
                     echo $e->getMessage();
                 }
             }
@@ -143,18 +144,20 @@ class Installer extends ApplicationAbstract
     public function installGroups()
     {
         try {
+            $date = new \DateTime('NOW', new \DateTimeZone('UTC'));
+
             switch ($this->dbPool->get('core')->getType()) {
                 case DatabaseType::MYSQL:
                     $this->dbPool->get('core')->con->beginTransaction();
 
                     $this->dbPool->get('core')->con->prepare(
-                        'INSERT INTO `' . $this->dbPool->get('core')->prefix . 'group` (`group_id`, `group_name`, `group_desc`) VALUES
-                            (1000000000, \'guest\', NULL),
-                            (1000101000, \'user\', NULL),
-                            (1000102000, \'admin\', NULL),
-                            (1000103000, \'support\', NULL),
-                            (1000104000, \'backend\', NULL),
-                            (1000105000, \'suspended\', NULL);'
+                        'INSERT INTO `' . $this->dbPool->get('core')->prefix . 'group` (`group_id`, `group_name`, `group_desc`, `group_status`, `group_created`) VALUES
+                            (1000000000, \'guest\', NULL, ' . GroupStatus::ACTIVE . ', \'' . $date->format('Y-m-d H:i:s') . '\'),
+                            (1000101000, \'user\', NULL, ' . GroupStatus::ACTIVE . ', \'' . $date->format('Y-m-d H:i:s') . '\'),
+                            (1000102000, \'admin\', NULL, ' . GroupStatus::ACTIVE . ', \'' . $date->format('Y-m-d H:i:s') . '\'),
+                            (1000103000, \'support\', NULL, ' . GroupStatus::ACTIVE . ', \'' . $date->format('Y-m-d H:i:s') . '\'),
+                            (1000104000, \'backend\', NULL, ' . GroupStatus::ACTIVE . ', \'' . $date->format('Y-m-d H:i:s') . '\'),
+                            (1000105000, \'suspended\', NULL, ' . GroupStatus::ACTIVE . ', \'' . $date->format('Y-m-d H:i:s') . '\');'
                     )->execute();
 
                     $this->dbPool->get('core')->con->commit();
@@ -261,5 +264,10 @@ class Installer extends ApplicationAbstract
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    public function error()
+    {
+        var_dump($this->dbPool->get('core')->con->errorInfo());
     }
 }

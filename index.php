@@ -115,5 +115,6 @@ $instHOBJ->installModules($toInstall);
 $instHOBJ->installGroups();
 $instHOBJ->installUsers(); /* TODO: create user 1 = Guest -> 2 = Admin */
 $instHOBJ->installSettings();
+$instHOBJ->error();
 
 echo 'ALPHA successfully installed!';
