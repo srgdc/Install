@@ -18,7 +18,7 @@ namespace Install;
 use phpOMS\Account\GroupStatus;
 use phpOMS\ApplicationAbstract;
 use phpOMS\DataStorage\Database\DatabaseType;
-use phpOMS\DataStorage\Database\Pool;
+use phpOMS\DataStorage\Database\DatabasePool;
 use phpOMS\Module\ModuleManager;
 
 /**
@@ -46,12 +46,12 @@ class Installer extends ApplicationAbstract
     /**
      * Constructor.
      *
-     * @param Pool $dbPool Database instance
+     * @param DatabasePool $dbPool Database instance
      *
      * @since  1.0.0
      * @author Dennis Eichhorn <d.eichhorn@oms.com>
      */
-    public function __construct(Pool $dbPool)
+    public function __construct(DatabasePool $dbPool)
     {
         $this->dbPool = $dbPool;
     }
@@ -59,6 +59,12 @@ class Installer extends ApplicationAbstract
     public function cleanupPrevious()
     {
         if (file_exists($path = __DIR__ . '/../Web/Backend/Routes.php')) {
+            unlink($path);
+        }
+
+        file_put_contents($path, '<?php return [];');
+
+        if (file_exists($path = __DIR__ . '/../Web/Api/Routes.php')) {
             unlink($path);
         }
 
