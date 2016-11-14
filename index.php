@@ -48,6 +48,7 @@ $toInstall = [
     'Checklist',
     'ClientEvaluation',
     'ClientManagement',
+    'Comments',
     'Controlling',
     'CostCenterAccounting',
     'CostObjectAccounting',
