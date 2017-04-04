@@ -125,7 +125,7 @@ class Installer extends ApplicationAbstract
     public function installModules($modules)
     {
         try {
-            $moduleManager = new ModuleManager($this);
+            $moduleManager = new ModuleManager($this, __DIR__ . '/../Modules');
 
             foreach ($modules as $module) {
                 try {
@@ -137,6 +137,8 @@ class Installer extends ApplicationAbstract
 
             return true;
         } catch (\Exception $e) {
+            echo $e->getMessage();
+            
             return false;
         }
     }
