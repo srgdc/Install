@@ -16,7 +16,7 @@
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../phpOMS/Autoloader.php';
 
-$dbHOBJ = new \phpOMS\DataStorage\Database\Pool();
+$dbHOBJ = new \phpOMS\DataStorage\Database\DatabasePool();
 $dbHOBJ->create('core', $CONFIG['db']['core']['masters'][0]);
 $instHOBJ = new \Install\Installer($dbHOBJ);
 
