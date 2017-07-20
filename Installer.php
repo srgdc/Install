@@ -7,7 +7,6 @@
  * @category   TBD
  * @package    TBD
  * @author     OMS Development Team <dev@oms.com>
- * @author     Dennis Eichhorn <d.eichhorn@oms.com>
  * @copyright  Dennis Eichhorn
  * @license    OMS License 1.0
  * @version    1.0.0
@@ -27,7 +26,6 @@ use phpOMS\Module\ModuleManager;
  * @category   Install
  * @package    Framework
  * @author     OMS Development Team <dev@oms.com>
- * @author     Dennis Eichhorn <d.eichhorn@oms.com>
  * @license    OMS License 1.0
  * @link       http://orange-management.com
  * @since      1.0.0
@@ -49,7 +47,6 @@ class Installer extends ApplicationAbstract
      * @param DatabasePool $dbPool Database instance
      *
      * @since  1.0.0
-     * @author Dennis Eichhorn <d.eichhorn@oms.com>
      */
     public function __construct(DatabasePool $dbPool)
     {
@@ -75,7 +72,6 @@ class Installer extends ApplicationAbstract
      * Install core tables.
      *
      * @since  1.0.0
-     * @author Dennis Eichhorn <d.eichhorn@oms.com>
      */
     public function installCore()
     {
@@ -120,7 +116,6 @@ class Installer extends ApplicationAbstract
      * @return bool
      *
      * @since  1.0.0
-     * @author Dennis Eichhorn <d.eichhorn@oms.com>
      */
     public function installModules($modules)
     {
@@ -147,7 +142,6 @@ class Installer extends ApplicationAbstract
      * Setup the core group.
      *
      * @since  1.0.0
-     * @author Dennis Eichhorn <d.eichhorn@oms.com>
      */
     public function installGroups()
     {
@@ -182,7 +176,6 @@ class Installer extends ApplicationAbstract
      * Setup the admin user.
      *
      * @since  1.0.0
-     * @author Dennis Eichhorn <d.eichhorn@oms.com>
      */
     public function installUsers()
     {
@@ -222,7 +215,6 @@ class Installer extends ApplicationAbstract
      * Set all settings.
      *
      * @since  1.0.0
-     * @author Dennis Eichhorn <d.eichhorn@oms.com>
      */
     public function installSettings()
     {
