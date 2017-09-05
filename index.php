@@ -28,6 +28,7 @@ $toInstall = [
     'Accounting',
     'AccountsPayable',
     'AccountsReceivable',
+    'Auditor',
     'AreaManager',
     'Arrival',
     'AssemblyManagement',
