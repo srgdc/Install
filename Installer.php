@@ -160,6 +160,11 @@ class Installer extends ApplicationAbstract
                             (1000105000, \'suspended\', NULL, ' . GroupStatus::ACTIVE . ', \'' . $date->format('Y-m-d H:i:s') . '\');'
                     )->execute();
 
+                    $this->dbPool->get('core')->con->prepare(
+                        'INSERT INTO `' . $this->dbPool->get('core')->prefix . 'group_permission` (`group_permission_group`, `group_permission_unit`, `group_permission_app`, `group_permission_module`, `group_permission_from`, `group_permission_type`, `group_permission_element`, `group_permission_component`, `group_permission_permission`) VALUES
+                            (1000102000, 1, \'backend\', NULL, NULL, NULL, NULL, NULL, ' . (PermissionType::READ | PermissionType::CREATE | PermissionType::MODIFY | PermissionType::DELETE | PermissionType::PERMISSION) . ');'
+                    )->execute();
+
                     $this->dbPool->get('core')->con->commit();
                     break;
             }
