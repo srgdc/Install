@@ -18,6 +18,7 @@ use phpOMS\ApplicationAbstract;
 use phpOMS\DataStorage\Database\DatabaseType;
 use phpOMS\DataStorage\Database\DatabasePool;
 use phpOMS\Module\ModuleManager;
+use Modules\Admin\Models\PermissionType;
 
 /**
  * Installer class.
