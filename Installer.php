@@ -35,7 +35,7 @@ class Installer extends ApplicationAbstract
     /**
      * Database object.
      *
-     * @var Pool
+     * @var DatabasePool
      * @since 1.0.0
      */
     public $dbPool = null;
