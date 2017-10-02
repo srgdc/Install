@@ -76,8 +76,8 @@ class Installer extends ApplicationAbstract
     {
         try {
             /* Create module table */
-            $this->dbPool->get('core')->con->prepare(
-                'CREATE TABLE if NOT EXISTS `' . $this->dbPool->get('core')->prefix . 'module` (
+            $this->dbPool->get()->con->prepare(
+                'CREATE TABLE if NOT EXISTS `' . $this->dbPool->get()->prefix . 'module` (
                             `module_id` varchar(255) NOT NULL,
                             `module_theme` varchar(100) DEFAULT NULL,
                             `module_path` varchar(50) NOT NULL,
@@ -88,8 +88,8 @@ class Installer extends ApplicationAbstract
             )->execute();
 
             /* Create module load table */
-            $this->dbPool->get('core')->con->prepare(
-                'CREATE TABLE if NOT EXISTS `' . $this->dbPool->get('core')->prefix . 'module_load` (
+            $this->dbPool->get()->con->prepare(
+                'CREATE TABLE if NOT EXISTS `' . $this->dbPool->get()->prefix . 'module_load` (
                             `module_load_id` int(11) NOT NULL AUTO_INCREMENT,
                             `module_load_pid` varchar(40) NOT NULL,
                             `module_load_type` tinyint(1) NOT NULL,
@@ -147,12 +147,12 @@ class Installer extends ApplicationAbstract
         try {
             $date = new \DateTime('NOW', new \DateTimeZone('UTC'));
 
-            switch ($this->dbPool->get('core')->getType()) {
+            switch ($this->dbPool->get()->getType()) {
                 case DatabaseType::MYSQL:
-                    $this->dbPool->get('core')->con->beginTransaction();
+                    $this->dbPool->get()->con->beginTransaction();
 
-                    $this->dbPool->get('core')->con->prepare(
-                        'INSERT INTO `' . $this->dbPool->get('core')->prefix . 'group` (`group_id`, `group_name`, `group_desc`, `group_status`, `group_created`) VALUES
+                    $this->dbPool->get()->con->prepare(
+                        'INSERT INTO `' . $this->dbPool->get()->prefix . 'group` (`group_id`, `group_name`, `group_desc`, `group_status`, `group_created`) VALUES
                             (1000000000, \'guest\', NULL, ' . GroupStatus::ACTIVE . ', \'' . $date->format('Y-m-d H:i:s') . '\'),
                             (1000101000, \'user\', NULL, ' . GroupStatus::ACTIVE . ', \'' . $date->format('Y-m-d H:i:s') . '\'),
                             (1000102000, \'admin\', NULL, ' . GroupStatus::ACTIVE . ', \'' . $date->format('Y-m-d H:i:s') . '\'),
@@ -161,12 +161,12 @@ class Installer extends ApplicationAbstract
                             (1000105000, \'suspended\', NULL, ' . GroupStatus::ACTIVE . ', \'' . $date->format('Y-m-d H:i:s') . '\');'
                     )->execute();
 
-                    $this->dbPool->get('core')->con->prepare(
-                        'INSERT INTO `' . $this->dbPool->get('core')->prefix . 'group_permission` (`group_permission_group`, `group_permission_unit`, `group_permission_app`, `group_permission_module`, `group_permission_from`, `group_permission_type`, `group_permission_element`, `group_permission_component`, `group_permission_permission`) VALUES
+                    $this->dbPool->get()->con->prepare(
+                        'INSERT INTO `' . $this->dbPool->get()->prefix . 'group_permission` (`group_permission_group`, `group_permission_unit`, `group_permission_app`, `group_permission_module`, `group_permission_from`, `group_permission_type`, `group_permission_element`, `group_permission_component`, `group_permission_permission`) VALUES
                             (1000102000, 1, \'backend\', NULL, NULL, NULL, NULL, NULL, ' . (PermissionType::READ | PermissionType::CREATE | PermissionType::MODIFY | PermissionType::DELETE | PermissionType::PERMISSION) . ');'
                     )->execute();
 
-                    $this->dbPool->get('core')->con->commit();
+                    $this->dbPool->get()->con->commit();
                     break;
             }
 
@@ -223,12 +223,12 @@ class Installer extends ApplicationAbstract
     public function installSettings()
     {
         try {
-            switch ($this->dbPool->get('core')->getType()) {
+            switch ($this->dbPool->get()->getType()) {
                 case DatabaseType::MYSQL:
-                    $this->dbPool->get('core')->con->beginTransaction();
+                    $this->dbPool->get()->con->beginTransaction();
 
-                    $this->dbPool->get('core')->con->prepare(
-                        'INSERT INTO `' . $this->dbPool->get('core')->prefix . 'settings` (`settings_id`, `settings_module`, `settings_name`, `settings_content`, `settings_group`) VALUES
+                    $this->dbPool->get()->con->prepare(
+                        'INSERT INTO `' . $this->dbPool->get()->prefix . 'settings` (`settings_id`, `settings_module`, `settings_name`, `settings_content`, `settings_group`) VALUES
                             (1000000001, NULL, \'username_length_max\', \'20\', NULL),
                             (1000000002, NULL, \'username_length_min\', \'5\', NULL),
                             (1000000003, NULL, \'password_length_max\', \'50\', NULL),
@@ -260,7 +260,7 @@ class Installer extends ApplicationAbstract
                             (1000000029, NULL, \'server_language\', \'en\', NULL)'
                     )->execute();
 
-                    $this->dbPool->get('core')->con->commit();
+                    $this->dbPool->get()->con->commit();
                     break;
             }
 
@@ -272,6 +272,6 @@ class Installer extends ApplicationAbstract
 
     public function error()
     {
-        var_dump($this->dbPool->get('core')->con->errorInfo());
+        var_dump($this->dbPool->get()->con->errorInfo());
     }
 }
