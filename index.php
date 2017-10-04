@@ -135,7 +135,8 @@
                             <td><?= extension_loaded('zlib') ? 'Available' : 'Not installed'; ?>
                 </table>
 
-                <p><strong>Tip:</strong> Many PHP extension just need to be activated in your php.ini file.</p>
+                <p><strong>Tip:</strong> Many PHP extension just need to be activated in your php.ini file located
+                at <?= php_ini_loaded_file(); ?>.</p>
 
                 <p><button class="prev">Previous</button><button class="next"<?= !$isOK ? ' disabled' : ''?>>Next</button></p>
             </div>
