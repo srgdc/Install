@@ -155,7 +155,7 @@
                 </table>
 
                 <p><strong>Tip:</strong> Many PHP extension just need to be activated in your php.ini file located
-                at <?= php_ini_loaded_file(); ?>.</p>
+                at <?= php_ini_loaded_file(); ?>. Reload the installtion in your browser after making any adjustments.</p>
 
                 <p><button class="prev">Previous</button><button class="next"<?= !$isOK ? ' disabled' : ''?>>Next</button></p>
             </div>
