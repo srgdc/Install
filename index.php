@@ -29,6 +29,7 @@
 <main>
     <div id="page-1" class="page">
         <section>
+            <img src="img/logo.png" width="50" style="float: right;">
             <h1>Welcome</h1>
             <div>
                 <p>Orange Management is a WebApp written in PHP and JavaScript supporting various database 
@@ -53,6 +54,7 @@
     </div>
     <div id="page-2" class="page">
         <section>
+            <img src="img/logo.png" width="50" style="float: right;">
             <h1>License &amp; User Agreement</h1>
             <div>
                 <p>Upon clicking Agree you agree with the following license agreement.</p>
@@ -77,6 +79,7 @@
     </div>
     <div id="page-3" class="page">
         <section>
+            <img src="img/logo.png" width="50" style="float: right;">
             <h1>Pre-installation check</h1>
             <div>
                 <p>The following checks show if your environment supports the necessary requirements of the WebApp.</p>
@@ -160,6 +163,7 @@
     </div>
     <div id="page-4" class="page">
         <section>
+            <img src="img/logo.png" width="50" style="float: right;">
             <h1>Database</h1>
             <div>
                 <p>Please create a database this WebApp can use and configure every field.</p>
@@ -252,6 +256,7 @@
     </div>
     <div id="page-5" class="page">
         <section>
+            <img src="img/logo.png" width="50" style="float: right;">
             <h1>Configuration</h1>
             <div>
                 <p>The following configuration options are general WebApp settings.</p>
@@ -282,6 +287,7 @@
     </div>
     <div id="page-6" class="page">
         <section>
+            <img src="img/logo.png" width="50" style="float: right;">
             <h1>Installation</h1>
             <div>
                 <p>Please wait until the installation finishes. You will be redirected to the backend 
