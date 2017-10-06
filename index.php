@@ -3,6 +3,27 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="/../jsOMS/Utils/oLib.js"></script> 
+    <script src="/../jsOMS/Asset/AssetManager.js"></script> 
+    <script src="/../jsOMS/Autoloader.js"></script> 
+    <script src="/../jsOMS/Log/Logger.js"></script> 
+    <script src="/../jsOMS/Log/LogLevel.enum.js"></script> 
+    <script src="/../jsOMS/Uri/Http.js"></script> 
+    <script src="/../jsOMS/Uri/UriFactory.js"></script> 
+    <script src="/../jsOMS/Event/EventManager.js"></script> 
+    <script src="/../jsOMS/Message/Request/RequestData.enum.js"></script> 
+    <script src="/../jsOMS/Message/Request/BrowserType.enum.js"></script> 
+    <script src="/../jsOMS/Message/Request/OSType.enum.js"></script> 
+    <script src="/../jsOMS/Message/Request/RequestMethod.enum.js"></script> 
+    <script src="/../jsOMS/Message/Request/RequestType.enum.js"></script> 
+    <script src="/../jsOMS/Message/Request/Request.js"></script>
+    <script src="/../jsOMS/Message/Response/ResponseType.enum.js"></script> 
+    <script src="/../jsOMS/Message/Response/ResponseResultType.enum.js"></script> 
+    <script src="/../jsOMS/Message/Response/ResponseManager.js"></script> 
+    <script src="/../jsOMS/Message/Response/Response.js"></script> 
+    <script src="/../jsOMS/UI/Component/Form.js"></script> 
+    <script src="/../jsOMS/Views/FormView.js"></script> 
+    <script src="/../Model/Message/Redirect.js"></script> 
 </head>
 <body>
 <main>
@@ -99,11 +120,6 @@
                             <td>IMAP extension for PHP
                             <td><?= extension_loaded('imap') ? 'Available' : 'Not installed'; ?>
                         <tr>
-                            <td class="<?= extension_loaded('pop3') ? 'OK' : 'FAILED'; ?>"><?= extension_loaded('pop3') ? 'OK' : 'FAILED'; ?>
-                            <td>Medium
-                            <td>POP3 extension for PHP
-                            <td><?= extension_loaded('pop3') ? 'Available' : 'Not installed'; ?>
-                        <tr>
                             <td class="<?= extension_loaded('curl') ? 'OK' : 'FAILED'; ?>"><?= extension_loaded('curl') ? 'OK' : 'FAILED'; ?>
                             <td>Medium
                             <td>cUrl extension for PHP
@@ -148,22 +164,22 @@
             <div>
                 <p>Please create a database this WebApp can use and configure every field.</p>
 
-                <form>
+                <form id="installForm" method="post" action="/install">
                     <ul>
-                        <li><label>Address</label>
-                        <li><input type="text" value="127.0.0.1" required>
-                        <li><label>Type</label>
-                        <li><select>
+                        <li><label for="iDbHost">Address</label>
+                        <li><input id="iDbHost" name="dbhost" type="text" value="127.0.0.1" required>
+                        <li><label for="iDbType">Type</label>
+                        <li><select id="iDbType" name="dbtype">
                                 <option value="mysql" selected>MySQL
                                 <option value="postgresql">PostgreSQL
                                 <option value="mssql">MSSQL
                             </select>
-                        <li><label>Port</label>
-                        <li><input type="number" value="3306" required>
-                        <li><label>Prefix</label>
-                        <li><input type="text" value="oms_" required>
-                        <li><label>Database</label>
-                        <li><input type="text" value="oms" required>
+                        <li><label for="iDbPort">Port</label>
+                        <li><input id="iDbPort" name="dbport" type="number" value="3306" required>
+                        <li><label for="iDbPrefix">Prefix</label>
+                        <li><input id="iDbPrefix" name="dbprefix" type="text" value="oms_" required>
+                        <li><label for="iDbName">Database</label>
+                        <li><input id="iDbName" name="dbname" type="text" value="oms" required>
                     </ul>
                 </form>
 
@@ -180,10 +196,10 @@
                 the installation and potentially during updates if the database needs to be modified.</p>
 
                 <ul>
-                    <li><label>User</label>
-                    <li><input type="text" value="" required>
-                    <li><label>Password</label>
-                    <li><input type="password" value="" required>
+                    <li><label for="iSchemaUser">User</label>
+                    <li><input id="iSchemaUser" name="schemauser" type="text" value="" required>
+                    <li><label for="iSchemaPassword">Password</label>
+                    <li><input id="iSchemaPassword" name="schemapassword" type="password" value="" required>
                 </ul>
 
                 <h3>Create</h3>
@@ -191,10 +207,10 @@
                 <p>The create user is only used by the API for creating new database entries.</p>
 
                 <ul>
-                    <li><label>User</label>
-                    <li><input type="text" value="" required>
-                    <li><label>Password</label>
-                    <li><input type="password" value="" required>
+                    <li><label for="iCreateUser">User</label>
+                    <li><input id="iCreateUser" name="createuser" type="text" value="" form="installForm" required>
+                    <li><label for="iCreatePassword">Password</label>
+                    <li><input id="iCreatePassword" name="createpassword" type="password" value="" form="installForm" required>
                 </ul>
 
                 <h3>Select</h3>
@@ -202,10 +218,10 @@
                 <p>The select user is used by every part of the WebApp to read database entries.</p>
 
                 <ul>
-                    <li><label>User</label>
-                    <li><input type="text" value="" required>
-                    <li><label>Password</label>
-                    <li><input type="password" value="" required>
+                    <li><label for="iSelectUser">User</label>
+                    <li><input id="iSelectUser" name="selectuser" type="text" value="" form="installForm" required>
+                    <li><label for="iSelectPassword">Password</label>
+                    <li><input id="iSelectPassword" name="selectpassword" type="password" value="" form="installForm" required>
                 </ul>
 
                 <h3>Update</h3>
@@ -213,10 +229,10 @@
                 <p>The update user is only used by the API for updating existing database entries.</p>
                 
                 <ul>
-                    <li><label>User</label>
-                    <li><input type="text" value="" required>
-                    <li><label>Password</label>
-                    <li><input type="password" value="" required>
+                    <li><label for="iUpdateUser">User</label>
+                    <li><input id="iUpdateUser" name="updateuser" type="text" value="" form="installForm" required>
+                    <li><label for="iUpdatePassword">Password</label>
+                    <li><input id="iUpdatePassword" name="updatepassword" type="password" value="" form="installForm" required>
                 </ul>
 
                 <h3>Delete</h3>
@@ -224,10 +240,10 @@
                 <p>The delete user is only used by the API for deleting existing database entries. </p>
 
                 <ul>
-                    <li><label>User</label>
-                    <li><input type="text" value="" required>
-                    <li><label>Password</label>
-                    <li><input type="password" value="" required>
+                    <li><label for="iDeleteUser">User</label>
+                    <li><input id="iDeleteUser" name="deleteuser" type="text" value="" form="installForm" required>
+                    <li><label for="iDeletePassword">Password</label>
+                    <li><input id="iDeletePassword" name="deletepassword" type="password" value="" form="installForm" required>
                 </ul>
 
                 <p><button class="prev">Previous</button><button class="next">Next</button></p>
@@ -242,25 +258,25 @@
 
                 <form>
                     <ul>
-                        <li><label>Organization Name</label>
-                        <li><input type="text" value="Orange-Management" required>
-                        <li><label>Admin Login</label>
-                        <li><input type="text" value="admin" required>
-                        <li><label>Admin Password</label>
-                        <li><input type="password" value="" required>
-                        <li><label>Admin Email</label>
-                        <li><input type="email" value="" required>
-                        <li><label>Logfile Path</label>
-                        <li><input type="text" value="<?= realpath(__DIR__ . '/../Logs'); ?>" required>
-                        <li><label>Web Subdirectory</label>
-                        <li><input type="text" value="/" required>
-                        <li><label>Default Language</label>
-                        <li><select>
+                        <li><label for="iOrgName" >Organization Name</label>
+                        <li><input id="iOrgName" name="orgname" type="text" value="Orange-Management" form="installForm" required>
+                        <li><label for="iAdminName">Admin Login</label>
+                        <li><input id="iAdminName" name="adminname" type="text" value="admin" form="installForm" required>
+                        <li><label for="iAdminPassword">Admin Password</label>
+                        <li><input id="iAdminPassword" name="adminpassword" type="password" value="" form="installForm" required>
+                        <li><label for="iAdminEmail">Admin Email</label>
+                        <li><input id="iAdminEmail" name="adminemail" type="email" value="" form="installForm" required>
+                        <li><label for="iLogPath">Logfile Path</label>
+                        <li><input id="iLogPath" name="logpath" type="text" value="<?= realpath(__DIR__ . '/../Logs'); ?>" form="installForm" required>
+                        <li><label for="iWebSubdir">Web Subdirectory</label>
+                        <li><input id="iWebSubdir" name="websubdir" type="text" value="/" form="installForm" required>
+                        <li><label for="iDefaultLang">Default Language</label>
+                        <li><select id="iDefaultLang" name="defaultlang" form="installForm">
                                 <option value="en" selected>English
                             </select>
                     </ul>
                 </form>
-                <p><button class="prev">Previous</button><button class="next">Install</button></p>
+                <p><button class="prev">Previous</button><button class="install" type="submit" form="installForm">Install</button></p>
             </div>
         </section>
     </div>
@@ -275,6 +291,9 @@
     </div>
 </main>
 <script>
+jsOMS.ready(function ()
+{
+    // navigation
     const nextButtons = Array.prototype.slice.call(document.getElementsByClassName('next')),
         prevButtons = Array.prototype.slice.call(document.getElementsByClassName('prev')),
         nextButtonsLength = nextButtons.length;
@@ -301,4 +320,33 @@
             );
         });
     }
+
+    // setup App
+    const app = {
+        responseManager: new jsOMS.Message.Response.ResponseManager(),
+        eventManager: new jsOMS.Event.EventManager()
+    };
+
+    app.responseManager.add('redirect', redirectMessage);
+
+    const formManager = new jsOMS.UI.Component.Form(app);
+    const logger = jsOMS.Log.Logger.getInstance();
+
+    window.logger  = logger;
+    formManager.bind('installForm');
+    formManager.get('installForm').injectSubmit(function(e) {
+        const valid = e.isValid();
+
+        if(valid) {
+            document.getElementsByTagName('main')[0].setAttribute(
+                'style', 
+                'margin-left: ' + (5 * -100) + '%;'
+            );
+        } else {
+            window.alert('You didn\'t fill out all required configuration fields. Please check your settings also on the previous pages.');
+        }
+
+        return valid;
+    });
+});
 </script>

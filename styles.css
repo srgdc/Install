@@ -46,7 +46,7 @@ button {
     background: #dcdcdc;
 }
 
-button.next {
+button.next, button.install {
     float: right;
 }
 
